@@ -1317,8 +1317,9 @@ class NixlConnectorWorker:
 
                 if transfer_topo.is_kv_layout_blocks_first:
                     # With FlashInfer index V separately to allow head splitting.
+                    v_layer_idx = local_layer_idx + 1 if split_k_and_v_meta.local_split_remote_joint_k_and_v else local_layer_idx
                     second_split = self.get_backend_aware_kv_block_len(
-                        layer_idx=i, first_split=False, mamba_view=mamba
+                        layer_idx=v_layer_idx, first_split=False, mamba_view=mamba
                     )
                     # Apply the same scaling as local_block_len above for when we read
                     # a chunk of local V from `tp_ratio` separate remote workers.
